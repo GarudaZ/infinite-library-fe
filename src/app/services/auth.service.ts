@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
 
-//does this match what will be returned by the api?
 export interface TokenResponse {
   success: string;
   token: string;
