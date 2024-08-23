@@ -1,16 +1,10 @@
 import { Component } from '@angular/core';
 //remove unused
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
-
+import { UserService, User } from '../services/user.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -22,19 +16,36 @@ export class LoginComponent {
   userName = '';
   password = '';
   submitted = false;
+  user: User | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
-  submit() {
+  login() {
     this.submitted = true;
     console.log('Username:', this.userName);
     console.log('Password:', this.password);
 
     if (this.userName && this.password) {
       this.authService.login(this.userName, this.password).subscribe(() => {
-        console.log('User is logged in');
-        this.router.navigateByUrl('/');
+        this.userService.loadUser();
+        this.router.navigateByUrl('/home');
       });
     }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.userService.removeUser();
+    this.submitted = false;
+  }
+
+  ngOnInit(): void {
+    this.userService.user$.subscribe((user) => {
+      this.user = user;
+    });
   }
 }

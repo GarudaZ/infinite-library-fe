@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
 
 //does this match what will be returned by the api?
-export interface User {
+export interface TokenResponse {
   success: string;
   token: string;
 }
@@ -15,20 +15,27 @@ export interface User {
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<User> {
+  login(username: string, password: string): Observable<TokenResponse> {
     return this.http
-      .post<User>('https://infinite-library.vercel.app/api/users/login', {
-        username,
-        password,
-      })
+      .post<TokenResponse>(
+        'https://infinite-library.vercel.app/api/users/login',
+        {
+          username,
+          password,
+        }
+      )
       .pipe(
-        tap((res: User) => this.setSession(res)),
+        tap((res: TokenResponse) => this.setSession(res)),
         shareReplay()
       );
   }
 
-  private setSession(authResult: User): void {
+  private setSession(authResult: TokenResponse): void {
     localStorage.setItem('id_token', authResult.token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('id_token');
   }
 
   logout(): void {

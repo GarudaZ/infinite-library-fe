@@ -1,7 +1,6 @@
-<div [hidden]="submitted">
+<div [hidden]="user">
   <legend>Login</legend>
   <form #loginForm="ngForm">
-    {{ loginForm.value | json }}
     <div>
       <label for="Username">Username</label>
       <input
@@ -29,7 +28,7 @@
     <button
       type="button"
       class="btn btn-default"
-      (click)="submit(); loginForm.reset()"
+      (click)="login(); loginForm.reset()"
       [disabled]="!loginForm.form.valid"
     >
       Enter
@@ -37,3 +36,6 @@
   </form>
 </div>
 <div [hidden]="!submitted">Logging In</div>
+<div>
+  <button type="button" (click)="logout()" [hidden]="!user">Logout</button>
+</div>

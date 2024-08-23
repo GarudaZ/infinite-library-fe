@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class AppComponent {
   title = 'infinite-library-fe';
-  token: string | null = '';
 
-  ngOnInit(): void {
-    this.token = localStorage.getItem('id_token');
-  }
+  constructor(private userService: UserService) {}
+
 }
