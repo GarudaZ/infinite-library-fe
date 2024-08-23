@@ -1,1 +1,39 @@
-<p>login works!</p>
+<div [hidden]="submitted">
+  <legend>Login</legend>
+  <form #loginForm="ngForm">
+    {{ loginForm.value | json }}
+    <div>
+      <label for="Username">Username</label>
+      <input
+        id="Username"
+        name="username"
+        type="text"
+        [(ngModel)]="userName"
+        #name="ngModel"
+        required
+      />
+      <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+        Name is required
+      </div>
+    </div>
+    <div>
+      <label for="Password">Password</label>
+      <input
+        id="Password"
+        name="password"
+        type="text"
+        [(ngModel)]="password"
+        required
+      />
+    </div>
+    <button
+      type="button"
+      class="btn btn-default"
+      (click)="submit(); loginForm.reset()"
+      [disabled]="!loginForm.form.valid"
+    >
+      Enter
+    </button>
+  </form>
+</div>
+<div [hidden]="!submitted">Logging In</div>

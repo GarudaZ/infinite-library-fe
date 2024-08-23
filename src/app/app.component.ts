@@ -10,4 +10,9 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class AppComponent {
   title = 'infinite-library-fe';
+  token: string | null = '';
+
+  ngOnInit(): void {
+    this.token = localStorage.getItem('id_token');
+  }
 }
