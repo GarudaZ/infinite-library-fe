@@ -13,7 +13,7 @@ export class HomeComponent {
     {
       _id: '66c47de86a6fa723d0269c47',
       user_id: '66c465304a078ec5ec51bdff',
-      name: 'display-books',
+      shelf_name: 'display-books',
       books: [
         {
           book_id: {
@@ -56,7 +56,7 @@ export class HomeComponent {
     {
       _id: '66c47de86a6fa723d0269c410',
       user_id: '66c465304a078ec5ec51bdff',
-      name: 'display-books',
+      shelf_name: 'display-books',
       books: [
         {
           book_id: {
