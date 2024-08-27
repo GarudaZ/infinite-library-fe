@@ -1,17 +1,24 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { UserService } from './services/user.service';
-
+import { UserService, User } from './services/user.service';
+import { AuthService } from './services/auth.service';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'infinite-library-fe';
+  user: User | null = null;
 
   constructor(private userService: UserService) {}
 
+  ngOnInit(): void {
+    this.userService.user$.subscribe((user) => {
+      this.user = user;
+    });
+  }
 }

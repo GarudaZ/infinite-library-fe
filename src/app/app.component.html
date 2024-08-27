@@ -2,9 +2,20 @@
   <nav>
     <ul>
       <li>
-        <a routerLink="/login" routerLinkActive="active" aria-current="page">
-          Login</a
-        >
+        <ng-container *ngIf="user; else loginTemplate">
+          <a
+            routerLink="/profile"
+            routerLinkActive="active"
+            aria-current="page"
+          >
+            {{ user.username }}</a
+          >
+        </ng-container>
+        <ng-template #loginTemplate>
+          <a routerLink="/login" routerLinkActive="active" aria-current="page">
+            Login</a
+          >
+        </ng-template>
       </li>
       <li>
         <a routerLink="/home" routerLinkActive="active" aria-current="page"

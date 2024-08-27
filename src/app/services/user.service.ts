@@ -25,7 +25,6 @@ export class UserService {
 
   loadUser(): void {
     const token: string | null = this.authService.getToken();
-    console.log(token);
 
     if (token) {
       console.log('decoding');
