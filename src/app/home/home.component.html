@@ -2,3 +2,12 @@
 <div>
   <h2>Welcome {{ user?.username }}</h2>
 </div>
+<div>
+  <ul>
+    @for (shelf of books; track shelf._id) { @for (book of shelf.books; track
+    book._id){
+
+    <li>{{ book.book_id.title }}</li>
+    } }
+  </ul>
+</div>
