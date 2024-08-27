@@ -18,9 +18,16 @@
         </ng-template>
       </li>
       <li>
-        <a routerLink="/home" routerLinkActive="active" aria-current="page"
-          >Home</a
-        >
+        <ng-container *ngIf="user; else splashTemplate">
+          <a routerLink="/home" routerLinkActive="active" aria-current="page"
+            >Home</a
+          >
+        </ng-container>
+        <ng-template #splashTemplate>
+          <a routerLink="/" routerLinkActive="active" aria-current="page"
+            >Home</a
+          >
+        </ng-template>
       </li>
     </ul>
   </nav>
