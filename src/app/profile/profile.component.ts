@@ -20,6 +20,5 @@ export class ProfileComponent {
     this.authService.logout();
     this.userService.removeUser();
     this.router.navigateByUrl('/login');
-    // this.submitted = false;
   }
 }
