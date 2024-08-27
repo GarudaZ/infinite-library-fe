@@ -37,11 +37,7 @@ export class LoginComponent {
     }
   }
 
-  logout() {
-    this.authService.logout();
-    this.userService.removeUser();
-    this.submitted = false;
-  }
+
 
   ngOnInit(): void {
     this.userService.user$.subscribe((user) => {
