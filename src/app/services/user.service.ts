@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { jwtDecode } from 'jwt-decode';
@@ -19,7 +19,7 @@ export class UserService {
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private authService: AuthService) {
     this.loadUser();
   }
 
@@ -48,8 +48,6 @@ export class UserService {
   }
 
   public getCurrentUser(): User | null {
-    console.log('getting current user');
-
     return this.userSubject.value;
   }
 

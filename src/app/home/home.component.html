@@ -4,8 +4,8 @@
 </div>
 <div>
   <ul>
-    @for (shelf of books; track shelf._id) { @for (book of shelf.books; track
-    book._id){
+    @for (shelf of books?.shelvedBooks; track shelf._id) { @for (book of
+    shelf.books; track book._id){
 
     <li>{{ book.book_id.title }}</li>
     <img src="{{ book.book_id.cover }}" />
