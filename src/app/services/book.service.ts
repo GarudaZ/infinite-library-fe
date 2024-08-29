@@ -104,4 +104,7 @@ export class BookService {
         })
       );
   }
+  addBook(selectedBook: any) {
+    console.log('adding book', selectedBook);
+  }
 }

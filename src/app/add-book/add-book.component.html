@@ -12,6 +12,7 @@
     [(ngModel)]="titleInput"
     name="titleInput"
     #name="ngModel"
+    required
   />
   <button
     type="button"
@@ -22,5 +23,16 @@
   </button>
   @if (booksFound){ @for (book of booksFound; track book.title){
   <li>{{ book.title }}, {{ book.author_name }}</li>
-  } }
+  <input
+    type="radio"
+    id="{{ book.title }}"
+    name="selectedBook"
+    value="{{ book.title }}"
+    (change)="selectBook(book)"
+  />
+  }
+  <button type="button" (click)="addBookToUser()" [disabled]="!selectedBook">
+    Add</button
+  >}
+  <div [hidden]="!addedSuccessfully"><p>Added Successfully!</p></div>
 </form>
