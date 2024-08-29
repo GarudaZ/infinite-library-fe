@@ -15,19 +15,20 @@ export class AddBookComponent {
   booksFound: any[] | null = null;
   titleInput = '';
   selectedBook = '';
+  searching = false;
   addedSuccessfully = false;
 
   constructor(private bookService: BookService) {}
 
   searchByTitle(title: string) {
-    console.log('searching');
+    this.searching = true;
     if (this.titleInput) {
       this.bookService
         .lookupBookByTitle(this.titleInput)
         .subscribe((results) => {
           console.log(results);
-
           this.booksFound = results;
+          this.searching = false;
         });
     } else {
       new Error('No title given for search');

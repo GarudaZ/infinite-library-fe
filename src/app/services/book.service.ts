@@ -106,5 +106,22 @@ export class BookService {
   }
   addBook(selectedBook: any) {
     console.log('adding book', selectedBook);
+    const formattedBook = {
+      title: selectedBook.title,
+      author: selectedBook.author_name,
+      isbn: selectedBook.isbn,
+      published: selectedBook.first_publish_year,
+      publisher: selectedBook.publisher[0],
+      genres: [...selectedBook.subject.slice(0, 3)],
+      cover: selectedBook.cover_i,
+    };
+    //add to collection
+    console.log(formattedBook);
+
+    this.http.post(
+      `https://infinite-library.vercel.app/api/books`,
+      formattedBook
+    );
+    //add to shelf
   }
 }
