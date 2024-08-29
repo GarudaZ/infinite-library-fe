@@ -2,9 +2,23 @@
 <div>
   <h2>Welcome {{ user?.username }}</h2>
 </div>
+
+<menu
+  ><label>Shelves</label>
+  <ul>
+    <li>
+      <select #shelves (change)="onShelfSelected(shelves.value)">
+        <option default value="All">All</option>
+        @for (shelf of books?.shelvedBooks; track shelf._id){
+        <option value="{{ shelf.shelf_name }}">{{ shelf.shelf_name }}</option>
+        }
+      </select>
+    </li>
+  </ul></menu
+>
 <div>
   <ul>
-    @for (shelf of books?.shelvedBooks; track shelf._id) { @for (book of
+    @for (shelf of displayFilteredBooks(); track shelf._id) { @for (book of
     shelf.books; track book._id){
 
     <li>{{ book.book_id.title }}</li>
@@ -12,3 +26,8 @@
     } }
   </ul>
 </div>
+@if (!books){
+<div>
+  <p>Loading...</p>
+</div>
+}
