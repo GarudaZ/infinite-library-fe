@@ -14,7 +14,9 @@ export class AddBookComponent {
   @Input() shelves: Shelf[] | null | undefined = null;
   booksFound: any[] | null = null;
   titleInput = '';
+  selectedShelf: string = '';
   selectedBook = '';
+
   searching = false;
   addedSuccessfully = false;
 
@@ -38,8 +40,13 @@ export class AddBookComponent {
   selectBook(value: string) {
     this.selectedBook = value;
   }
+
+  selectShelf(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this.selectedShelf = target.value;
+  }
   addBookToUser() {
-    this.bookService.addBook(this.selectedBook);
+    this.bookService.addBook(this.selectedBook, this.selectedShelf);
     this.addedSuccessfully = true;
   }
 }

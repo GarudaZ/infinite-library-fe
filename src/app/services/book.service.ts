@@ -104,24 +104,38 @@ export class BookService {
         })
       );
   }
-  addBook(selectedBook: any) {
-    console.log('adding book', selectedBook);
+  addBook(selectedBook: any, selectedShelf: string) {
+    //check if book exists yet on DB, if not add to collection
+    // get image from api
     const formattedBook = {
       title: selectedBook.title,
-      author: selectedBook.author_name,
-      isbn: selectedBook.isbn,
+      author: selectedBook.author_name[0],
+      isbn: selectedBook.isbn[0],
       published: selectedBook.first_publish_year,
       publisher: selectedBook.publisher[0],
       genres: [...selectedBook.subject.slice(0, 3)],
       cover: selectedBook.cover_i,
     };
-    //add to collection
-    console.log(formattedBook);
 
-    this.http.post(
-      `https://infinite-library.vercel.app/api/books`,
-      formattedBook
-    );
-    //add to shelf
+    this.http
+      .post(`https://infinite-library.vercel.app/api/books`, formattedBook)
+      .subscribe(
+        (res: any) => {
+          console.log('posted book:', res);
+          this.http
+            .patch(
+              `https://infinite-library.vercel.app/api/shelves/${selectedShelf}`,
+              { book_id: res.added_book._id }
+            )
+            .subscribe((res: any) => {
+              console.log('patched shelf:', res);
+              //add book to shelf optimistically
+            });
+        },
+
+        (error) => {
+          console.error('Error adding book:', error);
+        }
+      );
   }
 }
