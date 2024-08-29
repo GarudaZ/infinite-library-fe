@@ -1,4 +1,4 @@
-<Form>
+<form #titleSearchForm="ngForm">
   <h2>Add Book</h2>
   <label>Add to Collection</label>
   <select>
@@ -7,5 +7,20 @@
     }
   </select>
   <label>Book Title</label>
-  <input type="text" />
-</Form>
+  <input
+    type="text"
+    [(ngModel)]="titleInput"
+    name="titleInput"
+    #name="ngModel"
+  />
+  <button
+    type="button"
+    (click)="searchByTitle(titleInput)"
+    [disabled]="!titleSearchForm.form.valid"
+  >
+    Find
+  </button>
+  @if (booksFound){ @for (book of booksFound; track book.title){
+  <li>{{ book.title }}, {{ book.author_name }}</li>
+  } }
+</form>

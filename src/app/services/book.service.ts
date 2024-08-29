@@ -45,11 +45,6 @@ export interface PopulatedShelves {
   providedIn: 'root',
 })
 export class BookService {
-  private books: PopulatedShelves | null = null;
-  // books$ = this.books.asObservable();
-  // shelves$ = ['test', 'test2'];
-
-
   constructor(
     private http: HttpClient,
     private userService: UserService,
@@ -83,19 +78,21 @@ export class BookService {
           if (!res.shelvedBooks) {
             throw new Error('Invalid response structure');
           }
-          //added
-          this.books = res;
+
           return res;
         })
       );
   }
 
   lookupBookByTitle(title: string): Observable<any[]> {
+    console.log('bookservice working');
+    console.log(title);
+
     return this.http
       .get<any>(`https://openlibrary.org/search.json?title=${title}&limit=5`)
       .pipe(
         map((res) => {
-          console.log(res);
+          console.log('res:', res);
 
           if (!res.numFound) {
             throw new Error('Error during api request');
