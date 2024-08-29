@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { UserService, User } from '../services/user.service';
 import { BookService, PopulatedShelves } from '../services/book.service';
+import { AddBookComponent } from '../add-book/add-book.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [AddBookComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

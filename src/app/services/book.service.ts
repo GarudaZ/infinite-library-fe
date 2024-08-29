@@ -5,6 +5,19 @@ import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { map } from 'rxjs/operators';
 
+// export interface OAPIRes {
+//   numFound: string;
+//   start: string;
+//   numFoundExact: string;
+//   docs: string;
+//   num_found: string;
+//   q: string;
+//   offset: string;
+// }
+
+export interface BookSearchResults {
+  booksFound: Book[];
+}
 export interface UsersBookRef {
   book_id: Book;
   notes: string;
@@ -76,6 +89,24 @@ export class BookService {
             throw new Error('Invalid response structure');
           }
           return res;
+        })
+      );
+  }
+
+  lookupBookByTitle(title: string): Observable<any[]> {
+    return this.http
+      .get<any>(`https://openlibrary.org/search.json?title=${title}&limit=5`)
+      .pipe(
+        map((res) => {
+          console.log(res);
+
+          if (!res.numFound) {
+            throw new Error('Error during api request');
+          } else if (res.numFound === '0') {
+            throw new Error('No results found for that title');
+          } else {
+            return res.docs;
+          }
         })
       );
   }

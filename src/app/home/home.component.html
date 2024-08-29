@@ -1,10 +1,11 @@
-<p>home works!</p>
 <div>
   <h2>Welcome {{ user?.username }}</h2>
 </div>
 
-<menu
-  ><label>Shelves</label>
+<menu>
+  <label>Add Book</label>
+  <add-book-component></add-book-component>
+  <label>Shelves</label>
   <ul>
     <li>
       <select #shelves (change)="onShelfSelected(shelves.value)">
