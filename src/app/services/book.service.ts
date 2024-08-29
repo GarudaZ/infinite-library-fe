@@ -5,16 +5,6 @@ import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { map } from 'rxjs/operators';
 
-// export interface OAPIRes {
-//   numFound: string;
-//   start: string;
-//   numFoundExact: string;
-//   docs: string;
-//   num_found: string;
-//   q: string;
-//   offset: string;
-// }
-
 export interface BookSearchResults {
   booksFound: Book[];
 }
@@ -55,6 +45,11 @@ export interface PopulatedShelves {
   providedIn: 'root',
 })
 export class BookService {
+  private books: PopulatedShelves | null = null;
+  // books$ = this.books.asObservable();
+  // shelves$ = ['test', 'test2'];
+
+
   constructor(
     private http: HttpClient,
     private userService: UserService,
@@ -88,6 +83,8 @@ export class BookService {
           if (!res.shelvedBooks) {
             throw new Error('Invalid response structure');
           }
+          //added
+          this.books = res;
           return res;
         })
       );

@@ -1,1 +1,11 @@
-<p>add-book works!</p>
+<Form>
+  <h2>Add Book</h2>
+  <label>Add to Collection</label>
+  <select>
+    @for (shelf of shelves; track shelf._id) {
+    <option value="{{ shelf.shelf_name }}">{{ shelf.shelf_name }}</option>
+    }
+  </select>
+  <label>Book Title</label>
+  <input type="text" />
+</Form>

@@ -1,10 +1,10 @@
 <div>
-  <h2>Welcome {{ user?.username }}</h2>
+  <h1>Welcome {{ user?.username }}</h1>
 </div>
 
+<add-book-component [shelves]="books?.shelvedBooks"></add-book-component>
+<h2>Your Books</h2>
 <menu>
-  <label>Add Book</label>
-  <add-book-component></add-book-component>
   <label>Shelves</label>
   <ul>
     <li>
