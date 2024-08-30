@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 export interface BookSearchResults {
   booksFound: Book[];
@@ -36,7 +36,6 @@ export interface Shelf {
   created_at: string;
   __v: string;
 }
-
 export interface PopulatedShelves {
   shelvedBooks: Shelf[];
 }
@@ -104,8 +103,30 @@ export class BookService {
         })
       );
   }
+
+  isBookInDatabase(isbn: string): Observable<boolean> {
+    return this.http
+      .get<{ book_found: Book }>(
+        `https://infinite-library.vercel.app/api/${isbn}`
+      )
+      .pipe(
+        map((res) => {
+          if (!!res.book_found) {
+            return false;
+          } else {
+            return true;
+          }
+        }),
+        catchError((error) => {
+          console.error('Error checking database:', error);
+          return of(false);
+        })
+      );
+  }
+
   addBook(selectedBook: any, selectedShelf: string) {
     //check if book exists yet on DB, if not add to collection
+
     // get image from api
     const formattedBook = {
       title: selectedBook.title,
