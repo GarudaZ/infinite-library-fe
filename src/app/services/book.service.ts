@@ -107,11 +107,11 @@ export class BookService {
   isBookInDatabase(isbn: string): Observable<boolean> {
     return this.http
       .get<{ book_found: Book }>(
-        `https://infinite-library.vercel.app/api/${isbn}`
+        `https://infinite-library.vercel.app/api/books/${isbn}`
       )
       .pipe(
         map((res) => {
-          if (!!res.book_found) {
+          if (!res.book_found) {
             return false;
           } else {
             return true;
@@ -126,7 +126,8 @@ export class BookService {
 
   addBook(selectedBook: any, selectedShelf: string) {
     //check if book exists yet on DB, if not add to collection
-
+    // if (!this.isBookInDatabase(selectedBook.isbn)) {
+    // }
     // get image from api
     const formattedBook = {
       title: selectedBook.title,
