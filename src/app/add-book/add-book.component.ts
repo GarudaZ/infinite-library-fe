@@ -50,9 +50,6 @@ export class AddBookComponent {
     this.selectedShelf = target.value;
   }
   addBookToUser() {
-    // this.bookService.addBook(this.selectedBook, this.selectedShelf);
-    // this.addedSuccessfully = true;
-    // this.booksFound = null;
     this.bookService.addBook(this.selectedBook, this.selectedShelf).subscribe({
       next: () => {
         this.bookService.refreshBooks().subscribe();
