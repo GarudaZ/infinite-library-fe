@@ -63,7 +63,7 @@ export class BookService {
     console.log(userId);
 
     if (!userId) {
-      throw new Error('User ID is not available.');
+      throw new Error('No User ID, User ID required');
     }
 
     const header = {
@@ -121,8 +121,6 @@ export class BookService {
       )
       .pipe(
         map((res) => {
-          console.log(res);
-
           if (res && res.book_found) {
             return res.book_found;
           } else {
@@ -136,63 +134,68 @@ export class BookService {
       );
   }
 
-  addBook(selectedBook: any, selectedShelf: string) {
-    this.isBookInDatabase(selectedBook.isbn[0]).subscribe({
-      next: (bookFound) => {
-        console.log(bookFound);
-        if (!bookFound) {
-          const formattedBook = {
-            title: selectedBook.title,
-            author: selectedBook.author_name[0],
-            isbn: selectedBook.isbn[0],
-            lccn: selectedBook.lccn[0],
-            published: selectedBook.first_publish_year,
-            publisher: selectedBook.publisher[0],
-            genres: selectedBook.subject.slice(0, 3),
-            cover: selectedBook.cover_i,
-          };
+  addBook(selectedBook: any, selectedShelf: string): Observable<any> {
+    console.log('adding book');
 
-          this.http
-            .post(
-              `https://infinite-library.vercel.app/api/books`,
-              formattedBook
-            )
-            .subscribe({
-              next: (res: any) => {
-                console.log('posted book:', res);
-                if (res.added_book) {
-                  this.patchShelf(selectedShelf, res.added_book._id);
-                } else {
-                  console.error('Failed to add book');
-                }
-              },
-            });
-        } else {
-          this.patchShelf(selectedShelf, bookFound._id);
-        }
-      },
-      error: (error) => {
-        console.error('Error adding book:', error);
-      },
+    return new Observable((bookObserver) => {
+      this.isBookInDatabase(selectedBook.isbn[0]).subscribe({
+        next: (bookFound) => {
+          console.log(bookFound);
+          if (!bookFound) {
+            const formattedBook = {
+              title: selectedBook.title,
+              author: selectedBook.author_name[0],
+              isbn: selectedBook.isbn[0],
+              lccn: selectedBook.lccn[0],
+              published: selectedBook.first_publish_year,
+              publisher: selectedBook.publisher[0],
+              genres: selectedBook.subject.slice(0, 3),
+              cover: selectedBook.cover_i,
+            };
+
+            this.http
+              .post(
+                `https://infinite-library.vercel.app/api/books`,
+                formattedBook
+              )
+              .subscribe({
+                next: (res: any) => {
+                  if (res && res.added_book) {
+                    this.patchShelf(
+                      selectedShelf,
+                      res.added_book._id,
+                      bookObserver
+                    );
+                  } else {
+                    console.error('Failed to add book');
+                  }
+                },
+              });
+          } else {
+            this.patchShelf(selectedShelf, bookFound._id, bookObserver);
+          }
+        },
+        error: (error) => {
+          console.error('Error adding book:', error);
+        },
+      });
     });
   }
 
-  patchShelf(shelfId: string, bookId: string) {
+  patchShelf(shelfId: string, bookId: string, bookObserver: any): void {
     this.http
       .patch(`https://infinite-library.vercel.app/api/shelves/${shelfId}`, {
         book_id: bookId,
       })
       .subscribe({
         next: (res) => {
-          if (res) {
-            console.log('Shelf updated successfully');
-            this.refreshBooks().subscribe();
-          } else {
-            console.error('Failed to update shelf');
-          }
+          console.log('found, patching...');
+
+          bookObserver.next(res);
+          bookObserver.complete;
         },
         error: (error) => {
-          console.error('Error updating shelf:', error);
+          bookObserver.error(error);
         },
       });
   }

@@ -50,8 +50,20 @@ export class AddBookComponent {
     this.selectedShelf = target.value;
   }
   addBookToUser() {
-    this.bookService.addBook(this.selectedBook, this.selectedShelf);
-    this.addedSuccessfully = true;
-    this.booksFound = null;
+    // this.bookService.addBook(this.selectedBook, this.selectedShelf);
+    // this.addedSuccessfully = true;
+    // this.booksFound = null;
+    this.bookService.addBook(this.selectedBook, this.selectedShelf).subscribe({
+      next: () => {
+        this.bookService.refreshBooks().subscribe();
+        this.addedSuccessfully = true;
+        this.booksFound = null;
+        console.log('Book added and shelf updated successfully');
+      },
+      error: (error) => {
+        console.error('Failed to add book or update shelf:', error);
+        this.addedSuccessfully = false;
+      },
+    });
   }
 }
