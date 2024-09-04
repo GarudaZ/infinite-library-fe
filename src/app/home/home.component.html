@@ -23,7 +23,9 @@
     shelf.books; track book._id){
 
     <li>{{ book.book_id.title }}</li>
-    <img src="{{ book.book_id.cover }}" />
+    <img
+      src="https://covers.openlibrary.org/b/lccn/{{ book.book_id.lccn }}-L.jpg"
+    />
     } }
   </ul>
 </div>

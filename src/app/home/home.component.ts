@@ -37,9 +37,10 @@ export class HomeComponent {
     this.userService.user$.subscribe((user) => {
       this.user = user;
     });
-    this.bookService.getAllBooks().subscribe((data) => {
-      this.books = data;
+    this.bookService.books$.subscribe((books) => {
+      console.log(books);
+      this.books = books;
     });
+    this.bookService.refreshBooks().subscribe();
   }
 }
-// }

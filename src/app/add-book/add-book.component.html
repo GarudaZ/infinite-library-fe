@@ -29,8 +29,8 @@
     Find
   </button>
   <div [hidden]="!searching"><p>Searching</p></div>
-  <div [hidden]="searching">
-    @if (booksFound){ @for (book of booksFound; track book.title){
+  <div>
+    @if (booksFound){ @for (book of booksFound; track book.key){
     <li>{{ book.title }}, {{ book.author_name }}</li>
     <input
       type="radio"

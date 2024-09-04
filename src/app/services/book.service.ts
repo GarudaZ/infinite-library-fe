@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { UserService } from './user.service';
 import { AuthService } from './auth.service';
-import { catchError, map } from 'rxjs/operators';
-
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 export interface BookSearchResults {
   booksFound: Book[];
 }
@@ -21,6 +21,7 @@ export interface Book {
   title: string;
   author: string;
   isbn: string;
+  lccn: string;
   published: string;
   publisher: string;
   genres: string;
@@ -44,11 +45,16 @@ export interface PopulatedShelves {
   providedIn: 'root',
 })
 export class BookService {
+  private booksSubject = new BehaviorSubject<PopulatedShelves | null>(null);
+  public books$ = this.booksSubject.asObservable();
+
   constructor(
     private http: HttpClient,
     private userService: UserService,
     private authService: AuthService
-  ) {}
+  ) {
+    this.getAllBooks();
+  }
 
   getAllBooks(): Observable<PopulatedShelves> {
     const token: string | null = this.authService.getToken();
@@ -72,21 +78,25 @@ export class BookService {
       )
       .pipe(
         map((res: PopulatedShelves) => {
-          console.log(res);
-
           if (!res.shelvedBooks) {
             throw new Error('Invalid response structure');
           }
+          console.log('res', res);
 
+          this.booksSubject.next(res);
+          console.log('shelves popped');
           return res;
         })
       );
   }
 
-  lookupBookByTitle(title: string): Observable<any[]> {
-    console.log('bookservice working');
-    console.log(title);
+  refreshBooks() {
+    console.log('refreshing');
 
+    return this.getAllBooks();
+  }
+
+  lookupBookByTitle(title: string): Observable<any[]> {
     return this.http
       .get<any>(`https://openlibrary.org/search.json?title=${title}&limit=5`)
       .pipe(
@@ -104,17 +114,19 @@ export class BookService {
       );
   }
 
-  isBookInDatabase(isbn: string): Observable<boolean> {
+  isBookInDatabase(isbn: string): Observable<any> {
     return this.http
       .get<{ book_found: Book }>(
         `https://infinite-library.vercel.app/api/books/${isbn}`
       )
       .pipe(
         map((res) => {
-          if (!res.book_found) {
-            return false;
+          console.log(res);
+
+          if (res && res.book_found) {
+            return res.book_found;
           } else {
-            return true;
+            return false;
           }
         }),
         catchError((error) => {
@@ -125,39 +137,63 @@ export class BookService {
   }
 
   addBook(selectedBook: any, selectedShelf: string) {
-    //check if book exists yet on DB, if not add to collection
-    // if (!this.isBookInDatabase(selectedBook.isbn)) {
-    // }
-    // get image from api
-    const formattedBook = {
-      title: selectedBook.title,
-      author: selectedBook.author_name[0],
-      isbn: selectedBook.isbn[0],
-      published: selectedBook.first_publish_year,
-      publisher: selectedBook.publisher[0],
-      genres: [...selectedBook.subject.slice(0, 3)],
-      cover: selectedBook.cover_i,
-    };
+    this.isBookInDatabase(selectedBook.isbn[0]).subscribe({
+      next: (bookFound) => {
+        console.log(bookFound);
+        if (!bookFound) {
+          const formattedBook = {
+            title: selectedBook.title,
+            author: selectedBook.author_name[0],
+            isbn: selectedBook.isbn[0],
+            lccn: selectedBook.lccn[0],
+            published: selectedBook.first_publish_year,
+            publisher: selectedBook.publisher[0],
+            genres: selectedBook.subject.slice(0, 3),
+            cover: selectedBook.cover_i,
+          };
 
-    this.http
-      .post(`https://infinite-library.vercel.app/api/books`, formattedBook)
-      .subscribe(
-        (res: any) => {
-          console.log('posted book:', res);
           this.http
-            .patch(
-              `https://infinite-library.vercel.app/api/shelves/${selectedShelf}`,
-              { book_id: res.added_book._id }
+            .post(
+              `https://infinite-library.vercel.app/api/books`,
+              formattedBook
             )
-            .subscribe((res: any) => {
-              console.log('patched shelf:', res);
-              //add book to shelf optimistically
+            .subscribe({
+              next: (res: any) => {
+                console.log('posted book:', res);
+                if (res.added_book) {
+                  this.patchShelf(selectedShelf, res.added_book._id);
+                } else {
+                  console.error('Failed to add book');
+                }
+              },
             });
-        },
-
-        (error) => {
-          console.error('Error adding book:', error);
+        } else {
+          this.patchShelf(selectedShelf, bookFound._id);
         }
-      );
+      },
+      error: (error) => {
+        console.error('Error adding book:', error);
+      },
+    });
+  }
+
+  patchShelf(shelfId: string, bookId: string) {
+    this.http
+      .patch(`https://infinite-library.vercel.app/api/shelves/${shelfId}`, {
+        book_id: bookId,
+      })
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            console.log('Shelf updated successfully');
+            this.refreshBooks().subscribe();
+          } else {
+            console.error('Failed to update shelf');
+          }
+        },
+        error: (error) => {
+          console.error('Error updating shelf:', error);
+        },
+      });
   }
 }

@@ -3,6 +3,7 @@ import { BookService, Shelf } from '../services/book.service';
 import { map } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HomeComponent } from '../home/home.component';
 @Component({
   selector: 'add-book-component',
   standalone: true,
@@ -20,7 +21,10 @@ export class AddBookComponent {
   searching = false;
   addedSuccessfully = false;
 
-  constructor(private bookService: BookService) {}
+  constructor(
+    private bookService: BookService,
+    private homeComponent: HomeComponent
+  ) {}
 
   searchByTitle(title: string) {
     this.searching = true;
@@ -48,5 +52,6 @@ export class AddBookComponent {
   addBookToUser() {
     this.bookService.addBook(this.selectedBook, this.selectedShelf);
     this.addedSuccessfully = true;
+    this.booksFound = null;
   }
 }
