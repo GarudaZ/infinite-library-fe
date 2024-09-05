@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { jwtDecode } from 'jwt-decode';
-
-import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface User {
   username: string;
@@ -18,7 +18,7 @@ export class UserService {
   private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private http: HttpClient) {
     this.loadUser();
   }
 
@@ -52,5 +52,10 @@ export class UserService {
 
   public removeUser(): void {
     this.userSubject.next(null);
+  }
+  registerUser(body: {}): Observable<any> {
+    const apiUrl = environment.apiUrl;
+    console.log('registering');
+    return this.http.post(`${apiUrl}/users`, body);
   }
 }
