@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import { AuthService } from './auth.service';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment';
 export interface BookSearchResults {
   booksFound: Book[];
 }
@@ -45,6 +46,7 @@ export interface PopulatedShelves {
   providedIn: 'root',
 })
 export class BookService {
+  private apiUrl = environment.apiUrl;
   private booksSubject = new BehaviorSubject<PopulatedShelves | null>(null);
   public books$ = this.booksSubject.asObservable();
 
@@ -73,7 +75,7 @@ export class BookService {
 
     return this.http
       .get<PopulatedShelves>(
-        `https://infinite-library.vercel.app/api/users/${userId}/shelves/books`,
+        `${this.apiUrl}/users/${userId}/shelves/books`,
         header
       )
       .pipe(
@@ -116,9 +118,7 @@ export class BookService {
 
   isBookInDatabase(isbn: string): Observable<any> {
     return this.http
-      .get<{ book_found: Book }>(
-        `https://infinite-library.vercel.app/api/books/${isbn}`
-      )
+      .get<{ book_found: Book }>(`${this.apiUrl}/books/${isbn}`)
       .pipe(
         map((res) => {
           if (res && res.book_found) {
@@ -153,24 +153,19 @@ export class BookService {
               cover: selectedBook.cover_i,
             };
 
-            this.http
-              .post(
-                `https://infinite-library.vercel.app/api/books`,
-                formattedBook
-              )
-              .subscribe({
-                next: (res: any) => {
-                  if (res && res.added_book) {
-                    this.patchShelf(
-                      selectedShelf,
-                      res.added_book._id,
-                      bookObserver
-                    );
-                  } else {
-                    console.error('Failed to add book');
-                  }
-                },
-              });
+            this.http.post(`${this.apiUrl}/books`, formattedBook).subscribe({
+              next: (res: any) => {
+                if (res && res.added_book) {
+                  this.patchShelf(
+                    selectedShelf,
+                    res.added_book._id,
+                    bookObserver
+                  );
+                } else {
+                  console.error('Failed to add book');
+                }
+              },
+            });
           } else {
             this.patchShelf(selectedShelf, bookFound._id, bookObserver);
           }
@@ -184,7 +179,7 @@ export class BookService {
 
   patchShelf(shelfId: string, bookId: string, bookObserver: any): void {
     this.http
-      .patch(`https://infinite-library.vercel.app/api/shelves/${shelfId}`, {
+      .patch(`${this.apiUrl}/shelves/${shelfId}`, {
         book_id: bookId,
       })
       .subscribe({
@@ -198,5 +193,16 @@ export class BookService {
           bookObserver.error(error);
         },
       });
+  }
+
+  addShelf(shelfName: string, userId: string | undefined): Observable<any> {
+    const body = {
+      user_id: userId,
+      shelf_name: shelfName,
+      books: [],
+    };
+    console.log(body);
+
+    return this.http.post(`${this.apiUrl}/users/${userId}/shelves`, body);
   }
 }

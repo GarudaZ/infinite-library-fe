@@ -1,7 +1,7 @@
 <div>
   <h1>Welcome {{ user?.username }}</h1>
 </div>
-
+<add-shelf-component [shelves]="books?.shelvedBooks"></add-shelf-component>
 <add-book-component [shelves]="books?.shelvedBooks"></add-book-component>
 <h2>Your Books</h2>
 <menu>
