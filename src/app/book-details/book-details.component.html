@@ -1,0 +1,12 @@
+<p>Author:{{ bookDetails?.book_id?.author }}</p>
+<p>Title:{{ bookDetails?.book_id?.title }}</p>
+<img
+  src="https://covers.openlibrary.org/b/lccn/{{
+    bookDetails?.book_id?.lccn
+  }}-L.jpg"
+/>
+<p>Published:{{ bookDetails?.book_id?.published }}</p>
+<p>Added:{{ bookDetails?.book_id?.created_at }}</p>
+<p>Genres:{{ bookDetails?.book_id?.genres }}</p>
+<p>Tags: {{ bookDetails?.tags }}</p>
+<p>Review: {{ bookDetails?.reviews }}</p>

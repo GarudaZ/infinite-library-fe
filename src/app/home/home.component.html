@@ -3,6 +3,10 @@
 </div>
 <add-shelf-component [shelves]="books?.shelvedBooks"></add-shelf-component>
 <add-book-component [shelves]="books?.shelvedBooks"></add-book-component>
+@if (clickedBook) {
+<book-details-component [bookDetails]="clickedBook"></book-details-component>
+}
+
 <h2>Your Books</h2>
 <menu>
   <label>Shelves</label>
@@ -22,10 +26,17 @@
     @for (shelf of displayFilteredBooks(); track shelf._id) { @for (book of
     shelf.books; track book._id){
 
-    <li>{{ book.book_id.title }}</li>
-    <img
-      src="https://covers.openlibrary.org/b/lccn/{{ book.book_id.lccn }}-L.jpg"
-    />
+    <li (click)="selectBook(book)">
+      <p>
+        {{ book.book_id.title }}
+      </p>
+      <p>{{ book.book_id.author }}</p>
+      <img
+        src="https://covers.openlibrary.org/b/lccn/{{
+          book.book_id.lccn
+        }}-L.jpg"
+      />
+    </li>
     } }
   </ul>
 </div>

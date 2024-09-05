@@ -3,10 +3,11 @@ import { UserService, User } from '../services/user.service';
 import { BookService, PopulatedShelves } from '../services/book.service';
 import { AddBookComponent } from '../add-book/add-book.component';
 import { AddShelfComponent } from '../add-shelf/add-shelf.component';
+import { BookDetailsComponent } from '../book-details/book-details.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AddBookComponent, AddShelfComponent],
+  imports: [AddBookComponent, AddShelfComponent, BookDetailsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -14,6 +15,8 @@ export class HomeComponent {
   user: User | null = null;
   books: PopulatedShelves | null = null;
   displayedShelf: string = 'All';
+  // type correctly later
+  clickedBook: any = '';
 
   constructor(
     private userService: UserService,
@@ -43,5 +46,12 @@ export class HomeComponent {
       this.books = books;
     });
     this.bookService.refreshBooks().subscribe();
+  }
+
+  //return to type correctly
+  selectBook(bookDetails: any) {
+    console.log(bookDetails);
+
+    this.clickedBook = bookDetails;
   }
 }
