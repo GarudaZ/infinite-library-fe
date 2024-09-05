@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -14,8 +15,9 @@ export class RegisterComponent {
   passWord: string = '';
   userName: string = '';
   errorMessage: string = '';
+  success = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   register() {
     this.errorMessage = '';
@@ -25,6 +27,10 @@ export class RegisterComponent {
       .subscribe({
         next: (res) => {
           this.submitted = false;
+          this.success = true;
+          setTimeout(() => {
+            this.router.navigateByUrl('/login');
+          }, 2000);
         },
         error: (error) => {
           console.error('Encountered an error', error);
