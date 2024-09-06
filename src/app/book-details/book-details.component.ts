@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { Book, UsersBookRef } from '../services/book.service';
-
+import { Component, Input, Output } from '@angular/core';
+import { UsersBookRef } from '../services/book.service';
+import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'book-details-component',
   standalone: true,
@@ -10,4 +10,9 @@ import { Book, UsersBookRef } from '../services/book.service';
 })
 export class BookDetailsComponent {
   @Input() bookDetails: UsersBookRef | null = null;
+  @Output() closeDetails = new EventEmitter();
+
+  closePopUp() {
+    this.closeDetails.emit();
+  }
 }

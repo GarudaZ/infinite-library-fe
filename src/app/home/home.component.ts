@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { UserService, User } from '../services/user.service';
-import { BookService, PopulatedShelves } from '../services/book.service';
+import {
+  BookService,
+  PopulatedShelves,
+  UsersBookRef,
+} from '../services/book.service';
 import { AddBookComponent } from '../add-book/add-book.component';
 import { AddShelfComponent } from '../add-shelf/add-shelf.component';
 import { BookDetailsComponent } from '../book-details/book-details.component';
@@ -15,8 +19,8 @@ export class HomeComponent {
   user: User | null = null;
   books: PopulatedShelves | null = null;
   displayedShelf: string = 'All';
-  // type correctly later
-  clickedBook: any = '';
+  detailsOpen = false;
+  clickedBook: UsersBookRef | null = null;
 
   constructor(
     private userService: UserService,
@@ -48,10 +52,12 @@ export class HomeComponent {
     this.bookService.refreshBooks().subscribe();
   }
 
-  //return to type correctly
-  selectBook(bookDetails: any) {
+  selectBook(bookDetails: UsersBookRef) {
     console.log(bookDetails);
 
     this.clickedBook = bookDetails;
+  }
+  clearClickedBook() {
+    this.clickedBook = null;
   }
 }

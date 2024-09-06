@@ -4,7 +4,10 @@
 <add-shelf-component [shelves]="books?.shelvedBooks"></add-shelf-component>
 <add-book-component [shelves]="books?.shelvedBooks"></add-book-component>
 @if (clickedBook) {
-<book-details-component [bookDetails]="clickedBook"></book-details-component>
+<book-details-component
+  (closeDetails)="clearClickedBook()"
+  [bookDetails]="clickedBook"
+></book-details-component>
 }
 
 <h2>Your Books</h2>
