@@ -7,6 +7,7 @@
 <book-details-component
   (closeDetails)="clearClickedBook()"
   [bookDetails]="clickedBook"
+  [shelfId]="clickedBookShelf"
 ></book-details-component>
 }
 
@@ -29,7 +30,7 @@
     @for (shelf of displayFilteredBooks(); track shelf._id) { @for (book of
     shelf.books; track book._id){
 
-    <li (click)="selectBook(book)">
+    <li (click)="selectBook(book, shelf._id)">
       <p>
         {{ book.book_id.title }}
       </p>

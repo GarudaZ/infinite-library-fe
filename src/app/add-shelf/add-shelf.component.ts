@@ -36,7 +36,6 @@ export class AddShelfComponent {
     this.adding = true;
     this.bookService.addShelf(shelfNameInput, userId).subscribe({
       next: (res) => {
-        console.log('shelf posted...', res);
         this.bookService.refreshBooks().subscribe();
         this.adding = false;
       },

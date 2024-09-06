@@ -21,6 +21,7 @@ export class HomeComponent {
   displayedShelf: string = 'All';
   detailsOpen = false;
   clickedBook: UsersBookRef | null = null;
+  clickedBookShelf: string | null = null;
 
   constructor(
     private userService: UserService,
@@ -52,10 +53,11 @@ export class HomeComponent {
     this.bookService.refreshBooks().subscribe();
   }
 
-  selectBook(bookDetails: UsersBookRef) {
+  selectBook(bookDetails: UsersBookRef, shelfId: string) {
     console.log(bookDetails);
 
     this.clickedBook = bookDetails;
+    this.clickedBookShelf = shelfId;
   }
   clearClickedBook() {
     this.clickedBook = null;

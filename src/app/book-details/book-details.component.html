@@ -1,16 +1,37 @@
 <div class="book-details">
-  <p>Author:{{ bookDetails?.book_id?.author }}</p>
-  <p>Title:{{ bookDetails?.book_id?.title }}</p>
-  <img
-    src="https://covers.openlibrary.org/b/lccn/{{
-      bookDetails?.book_id?.lccn
-    }}-L.jpg"
-  />
-  <p>Published:{{ bookDetails?.book_id?.published }}</p>
-  <p>Added:{{ bookDetails?.book_id?.created_at }}</p>
-  <p>Genres:{{ bookDetails?.book_id?.genres }}</p>
-  <p>Tags: {{ bookDetails?.tags }}</p>
-  <p>Review: {{ bookDetails?.reviews }}</p>
+  <form #bookDetailsForm="ngForm">
+    <p>Author:{{ bookDetails?.book_id?.author }}</p>
+    <p>Title:{{ bookDetails?.book_id?.title }}</p>
+    <img
+      src="https://covers.openlibrary.org/b/lccn/{{
+        bookDetails?.book_id?.lccn
+      }}-L.jpg"
+    />
+    <p>Published:{{ bookDetails?.book_id?.published }}</p>
+    <p>Added:{{ bookDetails?.book_id?.created_at }}</p>
+    <p>Genres:{{ bookDetails?.book_id?.genres }}</p>
 
+    <label for="Password">Tags:</label>
+    <input
+      id="Tags"
+      name="tags"
+      type="text"
+      [(ngModel)]="bookTags"
+      [disabled]="!editing"
+      #tags="ngModel"
+    />
+    <label for="Reviews">Review:</label>
+    <input
+      id="Reviews"
+      name="reviews"
+      type="text"
+      [(ngModel)]="reViews"
+      [disabled]="!editing"
+      #reviews="ngModel"
+    />
+    <button [hidden]="editing" (click)="startEditing()">Edit</button>
+    <button [hidden]="!editing" (click)="updateDetails()">Update</button>
+    <p [hidden]="!updateSuccessful">Update Successfully</p>
+  </form>
   <button (click)="closePopUp()">Close</button>
 </div>

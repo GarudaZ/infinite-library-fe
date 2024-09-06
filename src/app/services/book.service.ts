@@ -201,8 +201,19 @@ export class BookService {
       shelf_name: shelfName,
       books: [],
     };
-    console.log(body);
 
     return this.http.post(`${this.apiUrl}/users/${userId}/shelves`, body);
+  }
+
+  patchUsersBook(
+    userId: string | undefined,
+    bookDetails: UsersBookRef | null,
+    shelfId: string | null,
+    updates: { tags: string; reviews: string }
+  ): Observable<any> {
+    return this.http.patch(
+      `${this.apiUrl}/users/${userId}/shelves/books/${bookDetails?.book_id._id}`,
+      { updates, shelfId }
+    );
   }
 }
