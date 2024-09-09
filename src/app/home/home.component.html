@@ -1,58 +1,59 @@
 <div class="home-page">
-  <h1>Welcome {{ user?.username }}</h1>
-</div>
-<add-shelf-component
-  (closeModal)="closeModal()"
-  [shelfModalOpen]="isShelfModalOpen"
-  [shelves]="books?.shelvedBooks"
-></add-shelf-component>
-<add-book-component
-  (closeModal)="closeModal()"
-  [addBookModalOpen]="isAddBookModalOpen"
-  [shelves]="books?.shelvedBooks"
-></add-book-component>
-<book-details-component
-  (closeDetails)="clearClickedBook()"
-  [clickedBookDetails]="clickedBook"
-  [shelfId]="clickedBookShelf"
-></book-details-component>
+  <add-shelf-component
+    (closeModal)="closeModal()"
+    [shelfModalOpen]="isShelfModalOpen"
+    [shelves]="books?.shelvedBooks"
+  ></add-shelf-component>
+  <add-book-component
+    (closeModal)="closeModal()"
+    [addBookModalOpen]="isAddBookModalOpen"
+    [shelves]="books?.shelvedBooks"
+  ></add-book-component>
+  <book-details-component
+    (closeDetails)="clearClickedBook()"
+    [clickedBookDetails]="clickedBook"
+    [shelfId]="clickedBookShelf"
+  ></book-details-component>
 
-<h2>Your Books</h2>
-<menu>
-  <button (click)="openAddShelf()">Add Shelf</button>
-  <button (click)="openAddBook()">Add Book</button>
-  <hr />
-  <label>Shelves</label>
+  <menu>
+    <h2>Your Books</h2>
+    <div>
+      <button (click)="openAddShelf()">Add Shelf</button>
+      <button (click)="openAddBook()">Add Book</button>
+      <label>Shelves: </label>
 
-  <select #shelves (change)="onShelfSelected(shelves.value)">
-    <option default value="All">All</option>
-    @for (shelf of books?.shelvedBooks; track shelf._id){
-    <option value="{{ shelf.shelf_name }}">{{ shelf.shelf_name }}</option>
-    }
-  </select>
-</menu>
-<hr />
-<div>
-  <ul>
-    @for (shelf of displayFilteredBooks(); track shelf._id) { @for (book of
-    shelf.books; track book._id){
+      <select #shelves (change)="onShelfSelected(shelves.value)">
+        <option default value="All">All</option>
+        @for (shelf of books?.shelvedBooks; track shelf._id){
+        <option value="{{ shelf.shelf_name }}">{{ shelf.shelf_name }}</option>
+        }
+      </select>
+    </div>
+  </menu>
+  @if (!books){
+  <div>
+    <p>Loading...</p>
+  </div>
+  }
+  <div class="books">
+    <ul>
+      @for (shelf of displayFilteredBooks(); track shelf._id) { @for (book of
+      shelf.books; track book._id){
 
-    <li (click)="selectBook(book, shelf._id)">
-      <p>
-        {{ book.book_id.title }}
-      </p>
-      <p>{{ book.book_id.author }}</p>
-      <img
-        src="https://covers.openlibrary.org/b/lccn/{{
-          book.book_id.lccn
-        }}-L.jpg"
-      />
-    </li>
-    } }
-  </ul>
+      <li class="book-listing" (click)="selectBook(book, shelf._id)">
+        <img
+          src="https://covers.openlibrary.org/b/lccn/{{
+            book.book_id.lccn
+          }}-L.jpg"
+        />
+        <div class="listing-text">
+          <p class="title">
+            {{ book.book_id.title }}
+          </p>
+          <p>{{ book.book_id.author }}</p>
+        </div>
+      </li>
+      } }
+    </ul>
+  </div>
 </div>
-@if (!books){
-<div>
-  <p>Loading...</p>
-</div>
-}

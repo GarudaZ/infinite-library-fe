@@ -39,7 +39,7 @@ h2 {
     "sidebar main main"
     "footer footer footer";
   grid-template-columns: auto auto auto;
-  grid-template-rows: 6vh 1fr 1fr 1fr 0.25fr;
+  grid-template-rows: 6vh 1fr 1fr 1fr 0.112fr;
   height: 100vh;
 }
 .logo {
@@ -83,6 +83,7 @@ main {
   grid-column-start: 1;
   grid-column-end: 4;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -145,7 +146,7 @@ button:hover {
 
 .modal-overlay {
   position: fixed;
-  z-index: 1;
+  z-index: 1000;
   left: 0;
   top: 0;
   overflow: auto;
@@ -190,4 +191,79 @@ ul {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.home-page {
+  height: 90%;
+  width: 100vw;
+  display: grid;
+  grid-template-areas:
+    "menu menu"
+    "books books";
+  grid-template-columns: auto auto;
+  grid-template-rows: auto 1fr;
+}
+app-home {
+  height: 100%;
+  width: 100%;
+}
+menu {
+  position: fixed;
+  margin: 0;
+  height: 12vh;
+  width: 100%;
+  grid-area: menu;
+  background-color: white;
+  z-index: 999;
+
+  text-align: center;
+  h2 {
+    font-size: 4vh;
+    margin: 1vh;
+  }
+  button {
+    margin-right: 1vw;
+  }
+}
+.books {
+  grid-area: books;
+
+  position: relative;
+  overflow-y: scroll;
+  top: 12vh;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  ul {
+    margin: 1vh;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+  }
+}
+footer {
+  grid-area: footer;
+  height: 1.8vh;
+  background-color: white;
+  padding: 0.8vh;
+}
+.book-listing {
+  // height: 25vh;
+  border-color: $secondary-colour;
+  border-radius: 15px;
+  border-width: 5px;
+  border-style: solid;
+  padding: 2vw 2vh;
+  margin: 1vw;
+  cursor: pointer;
+  img {
+    width: 20vh;
+    min-width: 20vh;
+    border-radius: 10px;
+  }
+  .title {
+    font-variant: small-caps;
+  }
+  .listing-text {
+    padding-left: 1vh;
+  }
 }
