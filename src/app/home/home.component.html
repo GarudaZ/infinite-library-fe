@@ -11,13 +11,11 @@
   [addBookModalOpen]="isAddBookModalOpen"
   [shelves]="books?.shelvedBooks"
 ></add-book-component>
-@if (clickedBook) {
 <book-details-component
   (closeDetails)="clearClickedBook()"
-  [bookDetails]="clickedBook"
+  [clickedBookDetails]="clickedBook"
   [shelfId]="clickedBookShelf"
 ></book-details-component>
-}
 
 <h2>Your Books</h2>
 <menu>

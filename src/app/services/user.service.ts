@@ -52,7 +52,6 @@ export class UserService {
   }
   registerUser(body: {}): Observable<any> {
     const apiUrl = environment.apiUrl;
-    console.log('registering');
     return this.http.post(`${apiUrl}/users`, body);
   }
 }

@@ -49,15 +49,12 @@ export class HomeComponent {
       this.user = user;
     });
     this.bookService.books$.subscribe((books) => {
-      console.log(books);
       this.books = books;
     });
     this.bookService.refreshBooks().subscribe();
   }
 
   selectBook(bookDetails: UsersBookRef, shelfId: string) {
-    console.log(bookDetails);
-
     this.clickedBook = bookDetails;
     this.clickedBookShelf = shelfId;
   }

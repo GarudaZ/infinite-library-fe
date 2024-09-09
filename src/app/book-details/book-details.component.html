@@ -1,37 +1,50 @@
-<div class="book-details">
-  <form #bookDetailsForm="ngForm">
-    <p>Author:{{ bookDetails?.book_id?.author }}</p>
-    <p>Title:{{ bookDetails?.book_id?.title }}</p>
+@if (clickedBookDetails) {
+<div class="modal-overlay">
+  <div class="details-box">
     <img
       src="https://covers.openlibrary.org/b/lccn/{{
-        bookDetails?.book_id?.lccn
+        clickedBookDetails.book_id.lccn
       }}-L.jpg"
     />
-    <p>Published:{{ bookDetails?.book_id?.published }}</p>
-    <p>Added:{{ bookDetails?.book_id?.created_at }}</p>
-    <p>Genres:{{ bookDetails?.book_id?.genres }}</p>
-
-    <label for="Password">Tags:</label>
-    <input
-      id="Tags"
-      name="tags"
-      type="text"
-      [(ngModel)]="bookTags"
-      [disabled]="!editing"
-      #tags="ngModel"
-    />
-    <label for="Reviews">Review:</label>
-    <input
-      id="Reviews"
-      name="reviews"
-      type="text"
-      [(ngModel)]="reViews"
-      [disabled]="!editing"
-      #reviews="ngModel"
-    />
-    <button [hidden]="editing" (click)="startEditing()">Edit</button>
-    <button [hidden]="!editing" (click)="updateDetails()">Update</button>
-    <p [hidden]="!updateSuccessful">Update Successfully</p>
-  </form>
-  <button (click)="closePopUp()">Close</button>
+    <form class="bookDetailsForm" #bookDetailsForm="ngForm">
+      <p>Author: {{ clickedBookDetails.book_id.author }}</p>
+      <p>Title: {{ clickedBookDetails.book_id.title }}</p>
+      <p>Published: {{ clickedBookDetails.book_id.published }}</p>
+      <p>Added: {{ clickedBookDetails.book_id.created_at }}</p>
+      <p>Genres: {{ clickedBookDetails.book_id.genres }}</p>
+      <p>{{ clickedBookDetails.reviews }}</p>
+      <label for="Tags">Tags:</label>
+      <div>
+        <input
+          id="Tags"
+          name="tags"
+          type="text"
+          [(ngModel)]="bookTags"
+          [disabled]="!editing"
+          #tags="ngModel"
+        />
+      </div>
+      <label for="Reviews">Review:</label>
+      <div>
+        <textarea
+          class="reviewsInput"
+          id="Reviews"
+          name="reviews"
+          type="text"
+          [(ngModel)]="reViews"
+          [disabled]="!editing"
+          #reviews="ngModel"
+        ></textarea>
+      </div>
+      <button [hidden]="editing" (click)="startEditing()">Edit</button>
+      <div>
+        <button [hidden]="!editing" (click)="updateDetails()">Update</button>
+      </div>
+      <p [hidden]="!updateSuccessful">Update Successfully</p>
+      <div class="close-button">
+        <button (click)="closePopUp()">Close</button>
+      </div>
+    </form>
+  </div>
 </div>
+}
