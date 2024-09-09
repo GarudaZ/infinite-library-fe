@@ -26,11 +26,11 @@ export class AddBookComponent {
 
   searchByTitle(title: string) {
     this.searching = true;
+    this.addedSuccessfully = false;
     if (this.titleInput) {
       this.bookService
         .lookupBookByTitle(this.titleInput)
         .subscribe((results) => {
-          console.log(results);
           this.booksFound = results;
           this.searching = false;
         });
@@ -53,7 +53,6 @@ export class AddBookComponent {
         this.bookService.refreshBooks().subscribe();
         this.addedSuccessfully = true;
         this.booksFound = null;
-        console.log('Book added and shelf updated successfully');
       },
       error: (error) => {
         console.error('Failed to add book or update shelf:', error);
@@ -63,6 +62,7 @@ export class AddBookComponent {
   }
   closeModalBox() {
     this.addBookModalOpen = false;
+    this.addedSuccessfully = false;
     this.closeModal.emit();
   }
 }

@@ -62,7 +62,6 @@ export class BookService {
     const token: string | null = this.authService.getToken();
 
     const userId = this.userService.getCurrentUser()?._id;
-    console.log(userId);
 
     if (!userId) {
       throw new Error('No User ID, User ID required');
@@ -71,7 +70,6 @@ export class BookService {
     const header = {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     };
-    console.log('getting books');
 
     return this.http
       .get<PopulatedShelves>(
@@ -83,18 +81,14 @@ export class BookService {
           if (!res.shelvedBooks) {
             throw new Error('Invalid response structure');
           }
-          console.log('res', res);
 
           this.booksSubject.next(res);
-          console.log('shelves popped');
           return res;
         })
       );
   }
 
   refreshBooks() {
-    console.log('refreshing');
-
     return this.getAllBooks();
   }
 
@@ -103,8 +97,6 @@ export class BookService {
       .get<any>(`https://openlibrary.org/search.json?title=${title}&limit=5`)
       .pipe(
         map((res) => {
-          console.log('res:', res);
-
           if (!res.numFound) {
             throw new Error('Error during api request');
           } else if (res.numFound === '0') {
@@ -135,12 +127,9 @@ export class BookService {
   }
 
   addBook(selectedBook: any, selectedShelf: string): Observable<any> {
-    console.log('adding book');
-
     return new Observable((bookObserver) => {
       this.isBookInDatabase(selectedBook.isbn[0]).subscribe({
         next: (bookFound) => {
-          console.log(bookFound);
           if (!bookFound) {
             const formattedBook = {
               title: selectedBook.title,
@@ -184,8 +173,6 @@ export class BookService {
       })
       .subscribe({
         next: (res) => {
-          console.log('found, patching...');
-
           bookObserver.next(res);
           bookObserver.complete;
         },

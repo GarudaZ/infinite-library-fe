@@ -26,8 +26,6 @@ export class UserService {
     const token: string | null = this.authService.getToken();
 
     if (token) {
-      console.log('decoding');
-
       const decodedToken = jwtDecode<{
         user_id: string;
         username: string;

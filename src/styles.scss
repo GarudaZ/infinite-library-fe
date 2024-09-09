@@ -245,15 +245,17 @@ footer {
   height: 1.8vh;
   background-color: white;
   padding: 0.8vh;
+  z-index: 999;
 }
 .book-listing {
-  // height: 25vh;
+  background-color: rgb(235, 235, 235);
   border-color: $secondary-colour;
-  border-radius: 15px;
+  border-radius: 10px;
   border-width: 5px;
   border-style: solid;
-  padding: 2vw 2vh;
+  padding: 1.5vh 1.5vh;
   margin: 1vw;
+  max-width: 20vh;
   cursor: pointer;
   img {
     width: 20vh;
@@ -263,7 +265,7 @@ footer {
   .title {
     font-variant: small-caps;
   }
-  .listing-text {
-    padding-left: 1vh;
+  .listing-text p {
+    margin: 0.6vh 1vh 0 0;
   }
 }
