@@ -40,8 +40,6 @@ export class UserService {
       };
 
       this.userSubject.next(decodedUser);
-    } else {
-      console.log('No token found');
     }
   }
 
