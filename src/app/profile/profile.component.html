@@ -1,4 +1,10 @@
-<p>profile works!</p>
-<div>
+<div class="profile">
+  <h2>Profile</h2>
+  <div class="profile-avatar">
+    {{ userInitials }}
+  </div>
+  <p>Username: {{ user?.username }}</p>
+  <p>Joined: {{ user?.created_at }}</p>
+
   <button type="button" (click)="logout()">Logout</button>
 </div>

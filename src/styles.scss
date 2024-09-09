@@ -12,6 +12,9 @@ $base-colour: black;
 body {
   margin: 0;
 }
+p {
+  font-size: 1.8vh;
+}
 h1 {
   font: 100% $heading-font;
   font-weight: 700;
@@ -120,4 +123,25 @@ input {
   border-style: solid;
   background-color: $tertiary-colour;
   padding: 0.4vh;
+}
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+}
+.profile-avatar {
+  @extend .avatar;
+  padding: 1.5vh;
+  font-size: 4vh;
+}
+button {
+  color: black;
+  background-color: $secondary-colour;
+  border-radius: 10%;
+  font-size: 2vh;
+}
+button:hover {
+  color: white;
+  background-color: $tertiary-colour;
 }
