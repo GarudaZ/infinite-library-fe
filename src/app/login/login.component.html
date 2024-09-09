@@ -1,8 +1,8 @@
-<div [hidden]="user">
-  <legend>Login</legend>
+<div class="form" [hidden]="user">
+  <h2>Login</h2>
   <form #loginForm="ngForm">
-    <div>
-      <label for="Username">Username</label>
+    <div class="entry-field">
+      <label for="Username: ">Username</label>
       <input
         id="Username"
         name="username"
@@ -15,8 +15,8 @@
         Name is required
       </div>
     </div>
-    <div>
-      <label for="Password">Password</label>
+    <div class="entry-field">
+      <label for="Password: ">Password</label>
       <input
         id="Password"
         name="password"
@@ -34,9 +34,9 @@
       Enter
     </button>
   </form>
-</div>
-<div [hidden]="!submitted">Logging In</div>
-<div>
-  <p>Don't have a profile?</p>
-  <button [routerLink]="'/register'">Register</button>
+  <div [hidden]="!submitted">Logging In</div>
+  <div>
+    <p>Don't have a profile?</p>
+    <button [routerLink]="'/register'">Register</button>
+  </div>
 </div>

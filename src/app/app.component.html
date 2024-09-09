@@ -1,5 +1,6 @@
-<main class="main">
+<div class="container">
   <nav>
+    <h3 class="logo">infl</h3>
     <ul>
       <li>
         <ng-container *ngIf="user; else loginTemplate">
@@ -31,6 +32,7 @@
       </li>
     </ul>
   </nav>
-
-  <router-outlet></router-outlet>
-</main>
+  <main class="main">
+    <router-outlet></router-outlet>
+  </main>
+</div>
