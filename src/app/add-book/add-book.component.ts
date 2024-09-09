@@ -1,8 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { BookService, Shelf } from '../services/book.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from '../home/home.component';
+import { EventEmitter } from '@angular/core';
 @Component({
   selector: 'add-book-component',
   standalone: true,
@@ -12,6 +12,8 @@ import { HomeComponent } from '../home/home.component';
 })
 export class AddBookComponent {
   @Input() shelves: Shelf[] | null | undefined = null;
+  @Input() addBookModalOpen: boolean = false;
+  @Output() closeModal = new EventEmitter();
   booksFound: any[] | null = null;
   titleInput = '';
   selectedShelf: string = '';
@@ -20,10 +22,7 @@ export class AddBookComponent {
   searching = false;
   addedSuccessfully = false;
 
-  constructor(
-    private bookService: BookService,
-    private homeComponent: HomeComponent
-  ) {}
+  constructor(private bookService: BookService) {}
 
   searchByTitle(title: string) {
     this.searching = true;
@@ -61,5 +60,9 @@ export class AddBookComponent {
         this.addedSuccessfully = false;
       },
     });
+  }
+  closeModalBox() {
+    this.addBookModalOpen = false;
+    this.closeModal.emit();
   }
 }

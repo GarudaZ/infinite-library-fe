@@ -22,6 +22,8 @@ export class HomeComponent {
   detailsOpen = false;
   clickedBook: UsersBookRef | null = null;
   clickedBookShelf: string | null = null;
+  isShelfModalOpen: boolean = false;
+  isAddBookModalOpen: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -61,5 +63,15 @@ export class HomeComponent {
   }
   clearClickedBook() {
     this.clickedBook = null;
+  }
+  openAddShelf() {
+    this.isShelfModalOpen = true;
+  }
+  openAddBook() {
+    this.isAddBookModalOpen = true;
+  }
+  closeModal() {
+    this.isShelfModalOpen = false;
+    this.isAddBookModalOpen = false;
   }
 }

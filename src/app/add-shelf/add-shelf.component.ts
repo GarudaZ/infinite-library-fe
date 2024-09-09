@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BookService, Shelf } from '../services/book.service';
 import { User, UserService } from '../services/user.service';
@@ -11,6 +11,8 @@ import { User, UserService } from '../services/user.service';
 })
 export class AddShelfComponent {
   @Input() shelves: Shelf[] | null | undefined = null;
+  @Input() shelfModalOpen: boolean | null = null;
+  @Output() closeModal = new EventEmitter();
   shelfNameInput = '';
   adding = false;
   shelfExists = false;
@@ -44,5 +46,9 @@ export class AddShelfComponent {
         this.adding = false;
       },
     });
+  }
+  closeModalBox() {
+    this.shelfModalOpen = false;
+    this.closeModal.emit();
   }
 }

@@ -1,48 +1,60 @@
-<form #titleSearchForm="ngForm">
-  <h2>Add Book</h2>
-  <label>Add to Collection</label>
-  <select
-    name="selectedShelf"
-    [(ngModel)]="selectedShelf"
-    (change)="selectShelf($event)"
-    required
-  >
-    @for (shelf of shelves; track shelf._id) {
-    <option value="{{ shelf._id }}">
-      {{ shelf.shelf_name }}
-    </option>
-    }
-  </select>
-  <label>Book Title</label>
-  <input
-    type="text"
-    [(ngModel)]="titleInput"
-    name="titleInput"
-    #name="ngModel"
-    required
-  />
-  <button
-    type="button"
-    (click)="searchByTitle(titleInput)"
-    [disabled]="!titleSearchForm.form.valid"
-  >
-    Find
-  </button>
-  <div [hidden]="!searching"><p>Searching</p></div>
-  <div>
-    @if (booksFound){ @for (book of booksFound; track book.key){
-    <li>{{ book.title }}, {{ book.author_name }}</li>
-    <input
-      type="radio"
-      id="{{ book.title }}"
-      name="selectedBook"
-      value="{{ book.title }}"
-      (change)="selectBook(book)"
-    />
-    }
-    <button type="button" (click)="addBookToUser()" [disabled]="!selectedBook">
-      Add</button
-    >}
-    <div [hidden]="!addedSuccessfully"><p>Added Successfully!</p></div>
+@if (addBookModalOpen) {
+
+<div class="modal-overlay">
+  <div class="modal-box">
+    <form #titleSearchForm="ngForm">
+      <h2>Add Book</h2>
+      <label>Add to Collection</label>
+      <select
+        name="selectedShelf"
+        [(ngModel)]="selectedShelf"
+        (change)="selectShelf($event)"
+        required
+      >
+        @for (shelf of shelves; track shelf._id) {
+        <option value="{{ shelf._id }}">
+          {{ shelf.shelf_name }}
+        </option>
+        }
+      </select>
+      <label>Book Title</label>
+      <input
+        type="text"
+        [(ngModel)]="titleInput"
+        name="titleInput"
+        #name="ngModel"
+        required
+      />
+      <button
+        type="button"
+        (click)="searchByTitle(titleInput)"
+        [disabled]="!titleSearchForm.form.valid"
+      >
+        Find
+      </button>
+      <div [hidden]="!searching"><p>Searching</p></div>
+      <div>
+        @if (booksFound){ @for (book of booksFound; track book.key){
+        <li>{{ book.title }}, {{ book.author_name }}</li>
+        <input
+          type="radio"
+          id="{{ book.title }}"
+          name="selectedBook"
+          value="{{ book.title }}"
+          (change)="selectBook(book)"
+        />
+        }
+        <button
+          type="button"
+          (click)="addBookToUser()"
+          [disabled]="!selectedBook"
+        >
+          Add</button
+        >}
+        <div [hidden]="!addedSuccessfully"><p>Added Successfully!</p></div>
+      </div>
+    </form>
+    <button (click)="closeModalBox()">Close</button>
   </div>
-</form>
+</div>
+}

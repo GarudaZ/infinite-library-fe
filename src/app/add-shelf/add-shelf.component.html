@@ -1,21 +1,29 @@
-<form #shelfAddForm="ngForm">
-  <h2>Add Shelf</h2>
+@if (shelfModalOpen) {
 
-  <label>Shelf Name</label>
-  <input
-    type="text"
-    [(ngModel)]="shelfNameInput"
-    name="shelfNameInput"
-    #name="ngModel"
-    required
-  />
-  <button
-    type="button"
-    (click)="addShelf(shelfNameInput)"
-    [disabled]="!shelfAddForm.form.valid"
-  >
-    Add
-  </button>
-  <div [hidden]="!adding"><p>Adding</p></div>
-  <div [hidden]="!shelfExists"><p>Shelf Already Exists</p></div>
-</form>
+<div class="modal-overlay">
+  <div class="modal-box">
+    <form #shelfAddForm="ngForm">
+      <h2>Add Shelf</h2>
+
+      <label>Shelf Name</label>
+      <input
+        type="text"
+        [(ngModel)]="shelfNameInput"
+        name="shelfNameInput"
+        #name="ngModel"
+        required
+      />
+      <button
+        type="button"
+        (click)="addShelf(shelfNameInput)"
+        [disabled]="!shelfAddForm.form.valid"
+      >
+        Add
+      </button>
+      <div [hidden]="!adding"><p>Adding</p></div>
+      <div [hidden]="!shelfExists"><p>Shelf Already Exists</p></div>
+    </form>
+    <button (click)="closeModalBox()">Close</button>
+  </div>
+</div>
+}

@@ -1,8 +1,16 @@
-<div>
+<div class="home-page">
   <h1>Welcome {{ user?.username }}</h1>
 </div>
-<add-shelf-component [shelves]="books?.shelvedBooks"></add-shelf-component>
-<add-book-component [shelves]="books?.shelvedBooks"></add-book-component>
+<add-shelf-component
+  (closeModal)="closeModal()"
+  [shelfModalOpen]="isShelfModalOpen"
+  [shelves]="books?.shelvedBooks"
+></add-shelf-component>
+<add-book-component
+  (closeModal)="closeModal()"
+  [addBookModalOpen]="isAddBookModalOpen"
+  [shelves]="books?.shelvedBooks"
+></add-book-component>
 @if (clickedBook) {
 <book-details-component
   (closeDetails)="clearClickedBook()"
@@ -13,18 +21,19 @@
 
 <h2>Your Books</h2>
 <menu>
+  <button (click)="openAddShelf()">Add Shelf</button>
+  <button (click)="openAddBook()">Add Book</button>
+  <hr />
   <label>Shelves</label>
-  <ul>
-    <li>
-      <select #shelves (change)="onShelfSelected(shelves.value)">
-        <option default value="All">All</option>
-        @for (shelf of books?.shelvedBooks; track shelf._id){
-        <option value="{{ shelf.shelf_name }}">{{ shelf.shelf_name }}</option>
-        }
-      </select>
-    </li>
-  </ul></menu
->
+
+  <select #shelves (change)="onShelfSelected(shelves.value)">
+    <option default value="All">All</option>
+    @for (shelf of books?.shelvedBooks; track shelf._id){
+    <option value="{{ shelf.shelf_name }}">{{ shelf.shelf_name }}</option>
+    }
+  </select>
+</menu>
+<hr />
 <div>
   <ul>
     @for (shelf of displayFilteredBooks(); track shelf._id) { @for (book of
