@@ -12,12 +12,14 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
   title = 'infinite-library-fe';
   user: User | null = null;
+  userInitials: string | undefined = '';
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.userService.user$.subscribe((user) => {
       this.user = user;
+      this.userInitials = user?.username.slice(0, 2).toUpperCase();
     });
   }
 }

@@ -16,7 +16,7 @@ h1 {
   font: 100% $heading-font;
   font-weight: 700;
   font-style: bold;
-  font-size: 8vw;
+  font-size: 8vh;
   color: $secondary-colour;
 }
 
@@ -54,6 +54,7 @@ nav {
   grid-area: header;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   ul {
     margin: 0;
     padding: 0;
@@ -93,6 +94,7 @@ app-splash {
 }
 .splash-banner {
   margin-bottom: 3vh;
+  text-align: center;
 }
 .form {
   border-color: $secondary-colour;
@@ -110,4 +112,12 @@ app-splash {
 }
 input {
   margin: 1vw;
+}
+.avatar {
+  border-color: black;
+  border-radius: 50%;
+  border-width: 0.7px;
+  border-style: solid;
+  background-color: $tertiary-colour;
+  padding: 0.4vh;
 }

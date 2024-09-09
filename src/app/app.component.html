@@ -3,22 +3,6 @@
     <h3 class="logo">infl</h3>
     <ul>
       <li>
-        <ng-container *ngIf="user; else loginTemplate">
-          <a
-            routerLink="/profile"
-            routerLinkActive="active"
-            aria-current="page"
-          >
-            {{ user.username }}</a
-          >
-        </ng-container>
-        <ng-template #loginTemplate>
-          <a routerLink="/login" routerLinkActive="active" aria-current="page">
-            Login</a
-          >
-        </ng-template>
-      </li>
-      <li>
         <ng-container *ngIf="user; else splashTemplate">
           <a routerLink="/home" routerLinkActive="active" aria-current="page"
             >Home</a
@@ -27,6 +11,20 @@
         <ng-template #splashTemplate>
           <a routerLink="/" routerLinkActive="active" aria-current="page"
             >Home</a
+          >
+        </ng-template>
+      </li>
+      <li>
+        <ng-container *ngIf="user; else loginTemplate">
+          <a routerLink="/profile" routerLinkActive="active" aria-current="page"
+            ><div class="avatar">
+              {{ userInitials }}
+            </div>
+          </a>
+        </ng-container>
+        <ng-template #loginTemplate>
+          <a routerLink="/login" routerLinkActive="active" aria-current="page">
+            Login</a
           >
         </ng-template>
       </li>
