@@ -20,13 +20,14 @@ export class AddBookComponent {
   selectedBook = '';
 
   searching = false;
-  addedSuccessfully = false;
-
+  addedSuccessfully: boolean | null = null;
+  errorMsg: string = '';
   constructor(private bookService: BookService) {}
 
   searchByTitle(title: string) {
+    this.errorMsg = '';
     this.searching = true;
-    this.addedSuccessfully = false;
+    this.addedSuccessfully = null;
     if (this.titleInput) {
       this.bookService
         .lookupBookByTitle(this.titleInput)
@@ -57,12 +58,14 @@ export class AddBookComponent {
       error: (error) => {
         console.error('Failed to add book or update shelf:', error);
         this.addedSuccessfully = false;
+        this.errorMsg = `Error adding book:${error}`;
       },
     });
   }
   closeModalBox() {
     this.addBookModalOpen = false;
-    this.addedSuccessfully = false;
+    this.addedSuccessfully = null;
+    this.errorMsg = '';
     this.closeModal.emit();
   }
 }

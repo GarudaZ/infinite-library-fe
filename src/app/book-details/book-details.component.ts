@@ -26,6 +26,7 @@ export class BookDetailsComponent {
   ) {}
 
   closePopUp() {
+    this.updateSuccessful = null;
     this.closeDetails.emit();
   }
   updateDetails() {

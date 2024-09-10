@@ -4,7 +4,7 @@
   <div class="modal-box">
     <form #titleSearchForm="ngForm">
       <h2>Add Book</h2>
-      <label>Add to Collection</label>
+      <label>Add to Collection </label>
       <select
         name="selectedShelf"
         [(ngModel)]="selectedShelf"
@@ -17,32 +17,37 @@
         </option>
         }
       </select>
-      <label>Book Title</label>
-      <input
-        type="text"
-        [(ngModel)]="titleInput"
-        name="titleInput"
-        #name="ngModel"
-        required
-      />
-      <button
-        type="button"
-        (click)="searchByTitle(titleInput)"
-        [disabled]="!titleSearchForm.form.valid"
-      >
-        Find
-      </button>
+      <div>
+        <label>Book Title</label>
+        <input
+          type="text"
+          [(ngModel)]="titleInput"
+          name="titleInput"
+          #name="ngModel"
+          required
+        />
+        <button
+          type="button"
+          (click)="searchByTitle(titleInput)"
+          [disabled]="!titleSearchForm.form.valid"
+        >
+          Find
+        </button>
+      </div>
       <div [hidden]="!searching"><p>Searching</p></div>
       <div>
         @if (booksFound){ @for (book of booksFound; track book.key){
-        <li>{{ book.title }}, {{ book.author_name }}</li>
-        <input
-          type="radio"
-          id="{{ book.title }}"
-          name="selectedBook"
-          value="{{ book.title }}"
-          (change)="selectBook(book)"
-        />
+        <li>
+          {{ book.title }}, {{ book.author_name }}
+
+          <input
+            type="radio"
+            id="{{ book.title }}"
+            name="selectedBook"
+            value="{{ book.title }}"
+            (change)="selectBook(book)"
+          />
+        </li>
         }
         <button
           type="button"
@@ -52,9 +57,10 @@
           Add</button
         >}
         <div [hidden]="!addedSuccessfully"><p>Added Successfully!</p></div>
+        <div [hidden]="!errorMsg">Error Adding Book</div>
       </div>
     </form>
-    <button (click)="closeModalBox()">Close</button>
+    <button class="close-button" (click)="closeModalBox()">Close</button>
   </div>
 </div>
 }
